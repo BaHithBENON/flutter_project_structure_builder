@@ -1,0 +1,2 @@
+# flutter_project_structure_builder
+Flutter project structure generator
