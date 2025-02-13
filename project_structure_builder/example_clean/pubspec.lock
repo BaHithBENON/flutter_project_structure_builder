@@ -174,11 +174,9 @@ packages:
   project_structure_builder:
     dependency: "direct dev"
     description:
-      path: project_structure_builder
-      ref: develop
-      resolved-ref: "3c1c4b74bbbf0d12187f9604d444a460f988d12f"
-      url: "https://github.com/BaHithBENON/flutter_project_structure_builder.git"
-    source: git
+      path: ".."
+      relative: true
+    source: path
     version: "0.0.1"
   sky_engine:
     dependency: transitive

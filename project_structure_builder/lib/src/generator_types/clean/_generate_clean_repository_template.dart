@@ -37,6 +37,11 @@ String generateCleanRepositoryTemplate({
   }).toList();
 
   return '''
+${featuresStrategy == FeaturesStrategy.independantModules ? '''
+import 'package:core/core/errors/failure.dart';
+''' : '''
+import '../../../../core/errors/failure.dart';
+'''}
 /// An abstract class that represents a repository for the feature [${CommonFunctions.instance.capitalize(feature)}].
 ///
 /// The class contains one abstract method for each usecase in [usecases].
@@ -48,11 +53,6 @@ String generateCleanRepositoryTemplate({
 /// The generated class is a valid implementation of
 /// [${CommonFunctions.instance.capitalize(feature)}Repository] and can be used as a
 /// starting point for implementing the repository for the feature.
-${featuresStrategy == FeaturesStrategy.independantModules ? '''
-import 'package:core/core/errors/failure.dart';
-''' : '''
-import '../../../../core/errors/failure.dart';
-'''}
 
 import '../entities/entity_$feature.dart';
 
