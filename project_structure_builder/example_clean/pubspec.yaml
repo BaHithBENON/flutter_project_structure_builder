@@ -47,7 +47,10 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
   project_structure_builder:
-    path: ../
+    git:
+      url: https://github.com/BaHithBENON/flutter_project_structure_builder.git
+      ref: main
+      path: project_structure_builder
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

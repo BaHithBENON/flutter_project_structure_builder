@@ -1,3 +1,5 @@
+import '../../../../core/errors/failure.dart';
+
 /// An abstract class that represents a repository for the feature [Settings].
 ///
 /// The class contains one abstract method for each usecase in [usecases].
@@ -9,8 +11,6 @@
 /// The generated class is a valid implementation of
 /// [SettingsRepository] and can be used as a
 /// starting point for implementing the repository for the feature.
-import '../../../../core/errors/failure.dart';
-
 
 import '../entities/entity_settings.dart';
 

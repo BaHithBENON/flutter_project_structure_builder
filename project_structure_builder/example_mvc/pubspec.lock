@@ -176,7 +176,7 @@ packages:
     description:
       path: project_structure_builder
       ref: develop
-      resolved-ref: "3c1c4b74bbbf0d12187f9604d444a460f988d12f"
+      resolved-ref: "4cca2715d8c49e71c1ecdca4389f20d22d0775eb"
       url: "https://github.com/BaHithBENON/flutter_project_structure_builder.git"
     source: git
     version: "0.0.1"
