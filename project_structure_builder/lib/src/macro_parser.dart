@@ -6,8 +6,7 @@ class MacroParser {
   const MacroParser({required this.projectPath});
 
   void updateFiles() {
-    print("🔄 Mise à jour des fichiers avec les macros...");
-
+    print("🔄 Updating files with macros...");
     _updateMainDart();
   }
 
@@ -16,30 +15,30 @@ class MacroParser {
     final file = File(mainFilePath);
 
     if (!file.existsSync()) {
-      print("⚠️ main.dart introuvable !");
+      print("⚠️ main.dart not found!");
       return;
     }
 
     String content = file.readAsStringSync();
-    print("📄 Chargement du fichier main.dart...");
+    print("📄 Loading the main.dart file...");
 
-    // Vérifier si les macros sont présentes
+    // Check if macros are present
     if (!content.contains("// 🔹 MACRO:IMPORTS")) {
-      print("⚠️ La macro IMPORTS n'est pas présente dans main.dart !");
+      print("⚠️ The IMPORTS macro is not present in main.dart!");
     }
     if (!content.contains("// 🔹 MACRO:FEATURES")) {
-      print("⚠️ La macro FEATURES n'est pas présente dans main.dart !");
+      print("⚠️ The FEATURES macro is not present in main.dart!");
     }
 
-    // Remplacement des macros
+    // Replacing macros
     String newContent = _replaceMacro(content, 'IMPORTS', _generateImports());
     newContent = _replaceMacro(newContent, 'FEATURES', _generateFeatureList());
 
     if (newContent != content) {
       file.writeAsStringSync(newContent);
-      print("✅ main.dart mis à jour !");
+      print("✅ main.dart updated!");
     } else {
-      print("⚠️ Aucune modification rencontrée.");
+      print("⚠️ No changes found.");
     }
   }
 
@@ -48,7 +47,7 @@ class MacroParser {
     final pattern = RegExp(r'// 🔹 MACRO:' + macro + r'\n([\s\S]*?)// 🔹 END_' + macro, multiLine: true);
     
     if (!pattern.hasMatch(content)) {
-      print("⚠️ Aucune macro trouvée pour $macro !");
+      print("⚠️ No macro found for $macro!");
       return content;
     }
 
@@ -56,6 +55,7 @@ class MacroParser {
       return "// 🔹 MACRO:$macro\n$replacement\n// 🔹 END_$macro";
     });
   }
+
 
 
   String _generateImports() {

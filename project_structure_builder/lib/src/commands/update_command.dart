@@ -13,39 +13,60 @@ class UpdateCommand {
   final ArgParser argParser = ArgParser();
 
   UpdateCommand() {
-    argParser.addOption('project', abbr: 'p', help: 'Nom du projet', defaultsTo: 'mon_projet');
+    argParser.addOption('project', abbr: 'p', help: 'Project name', defaultsTo: 'my_project');
   }
 
+  /// Executes the project update command.
+  ///
+  /// This method reads the command arguments, parses the project configuration,
+  /// and calls the project structure generator to update the project.
+  ///
+  /// Expected arguments:
+  /// - [--project <project_name>] : the name of the project.
+  ///
+  /// If the project name is not specified, the default name is "my_flutter_app".
+  ///
+  /// The method reads and parses the project configuration to extract the following information:
+  /// - project name
+  /// - architecture type
+  /// - feature strategy
+  /// - state management
+  /// - list of features
+  /// - list of environments
+  /// - list of environment variables
+  ///
+  /// Then, the method calls the project structure generator to update the project
+  /// based on the extracted information.
   void run(List<String> arguments) {
     final ArgResults args = argParser.parse(arguments);
     final projectName = args['project'] ?? 'my_flutter_app';
 
     print(
-      "📥 Arguments reçus: $arguments\n"
-      "🔄 Mise à jour du projet: $projectName",
+      "📥 Received arguments: $arguments\n"
+      "🔄 Updating project: $projectName",
     );
 
     try {
       final parser = ConfigParser();
       final config = parser.parseConfig();
 
-      String projectName = config['project_name'];
-      ArchitectureTypes architecture = ArchitectureTypes.fromValue(config['architecture']);
-      FeaturesStrategy featuresStrategy = FeaturesStrategy.fromValue(config['features_strategy']);
-      StateManagementTypes stateManagement = StateManagementTypes.fromValue(config['state_management']);
-      List<String> envsList = List<String>.from(config['envs'] ?? []);
-      List<String> envVariables = List<String>.from(config['env_variables'] ?? []);
-      List<String> features = CommonFunctions.instance.extractFeatures(config);
+      final String projectName = config['project_name'];
+      final ArchitectureTypes architecture = ArchitectureTypes.fromValue(config['architecture']);
+      final FeaturesStrategy featuresStrategy = FeaturesStrategy.fromValue(config['features_strategy']);
+      final StateManagementTypes stateManagement = StateManagementTypes.fromValue(config['state_management']);
+      final List<String> envsList = List<String>.from(config['envs'] ?? []);
+      final List<String> envVariables = List<String>.from(config['env_variables'] ?? []);
+      final List<String> features = CommonFunctions.instance.extractFeatures(config);
 
       print(
-        "✅ Configuration chargée avec succès !\n"
-        "📌 Nom du projet : $projectName\n"
-        "🏗️ Architecture : ${architecture.name}\n"
-        "🛠️ Stratégie des fonctionnalités : (${featuresStrategy.name} | ${featuresStrategy.explanation})\n"
-        "🔧 Gestionnaire d´état : ${stateManagement.name}\n"
-        "📂 Fonctionnalités : $features\n"
-        "🌍 Environnements : $envsList\n"
-        "🌍 Variables d'environnement : $envVariables"
+        "✅ Configuration successfully loaded!\n"
+        "📌 Project name: $projectName\n"
+        "🏗️ Architecture: ${architecture.name}\n"
+        "🛠️ Feature strategy: (${featuresStrategy.name} | ${featuresStrategy.explanation})\n"
+        "🔧 State management: ${stateManagement.name}\n"
+        "📂 Features: $features\n"
+        "🌍 Environments: $envsList\n"
+        "🌍 Environment variables: $envVariables"
         ,
       );
 
@@ -54,9 +75,9 @@ class UpdateCommand {
         final useCases = CommonFunctions.instance.extractUseCasesForFeature(config, element);
 
         print(
-          "\n🗂️ Attributs de l'entité pour $element \n(\n${entityAttributes.map((attr) => "\t📌 ${attr.name}").join("\n")}\n)\n"
-          "\n⚡ UseCases pour la fonctionnalité $element\n("
-          "${useCases.map((useCase) => "\t📌 UseCase : $useCase").join("\n")}"
+          "\n🗂️ Entity attributes for $element \n(\n${entityAttributes.map((attr) => "\t📌 ${attr.name}").join("\n")}\n)\n"
+          "\n⚡ UseCases for feature $element\n("
+          "${useCases.map((useCase) => "\t📌 UseCase: $useCase").join("\n")}"
           ")"
         );
       }
@@ -74,9 +95,28 @@ class UpdateCommand {
       );
       generator.generateStructure(Directory.current.path);
 
-      print('✅ Mise à jour terminée !');
+      print('✅ Update completed!');
     } catch (e) {
-      print("❌ Erreur : $e");
+      print("❌ Error : $e");
     }
+  }
+
+  void help() {
+    print("""
+Usage:
+  dart run project_structure_builder <command> [options]
+
+Commands:
+  update   : Updates the Flutter project structure based on the provided configuration.
+  help     : Displays this help message.
+
+Options:
+  <command> : The command to execute (e.g., 'update' to update the project structure).
+  [options] : Any additional options for the command (if applicable).
+
+Examples:
+  dart run project_structure_builder update
+  dart run project_structure_builder help
+    """);
   }
 }

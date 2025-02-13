@@ -84,24 +84,36 @@ class ProjectMvvmArchitectureGenerator {
       );
     }
 
-    print("✅ Structure du projet pour l´architecture ´´${ArchitectureTypes.mvvmArchitecture.name}´´ générée avec succès !");
+    print("✅ Project structure for the '${ArchitectureTypes.mvvmArchitecture.name}' architecture generated successfully!");
   }
 
+  /// Creates the feature structure for the MVVM architecture.
+  ///
+  /// The structure includes directories and files for models, viewmodels,
+  /// repositories, and use cases based on the specified feature and attributes.
+  ///
+  /// [feature] is the name of the feature.
+  /// [featureStrategy] is the strategy used for feature organization.
+  /// [featurePresentationLayerPath] is the path for the feature's presentation layer.
+  /// [usecases] is a list of use cases associated with the feature.
+  /// [entityAttributes] is a list of attributes for the feature's entity model.
   void _createFeature(String feature, {
     required String featureStrategy, required String featurePresentationLayerPath, 
     List<(String, UseCaseType, List<AttributeFormat>)> usecases = const [],
     List<AttributeFormat> entityAttributes = const [],
   }) {
     
+    // Determine the feature's root path based on the strategy and project name.
     final featurePath = CommonFunctions.instance.getFeaturePath(
       feature: feature, strategy: featureStrategy, featuresStrategy: featuresStrategy, projectName: projectName,
     );
-    //
-    
+
+    // Create necessary directories for the feature.
     CommonFunctions.instance.createDir("$featurePath/enums");
     CommonFunctions.instance.createDir("$featurePath/functions");
-    
     CommonFunctions.instance.createDir("$featurePath/models");
+    
+    // Generate the model file for the feature.
     CommonFunctions.instance.createFile("$featurePath/models/model_$feature.dart", 
       MvvmArchitectureTemplateGenerator.instance.mvvmModelTemplate(feature: feature, attributes: entityAttributes));
 
@@ -109,6 +121,8 @@ class ProjectMvvmArchitectureGenerator {
     CommonFunctions.instance.createDir("$featurePath/data");
     CommonFunctions.instance.createDir(featurePresentationLayerPath);
     CommonFunctions.instance.createDir("$featurePath/viewmodels");
+    
+    // Generate the viewmodel file for the feature.
     CommonFunctions.instance.createFile("$featurePath/viewmodels/${CommonFunctions.instance.snakeCase(feature)}_viewmodel.dart", 
       CommonTemplateGenerator.instance.controllerTemplate(
         feature: feature,
@@ -119,7 +133,10 @@ class ProjectMvvmArchitectureGenerator {
       ),
     );
 
+    // Create directories and files for the repositories.
     CommonFunctions.instance.createDir("$featurePath/repositories");
+
+    // Generate the repository interface file.
     CommonFunctions.instance.createFile("$featurePath/repositories/${CommonFunctions.instance.snakeCase(feature)}_repository.dart", 
       MvcArchitectureTemplateGenerator.instance.mvcRepositoryTemplate(
         feature: feature, 
@@ -128,6 +145,8 @@ class ProjectMvvmArchitectureGenerator {
         usecaseAttributes: <String, List<AttributeFormat>>{ for (var usecase in usecases) usecase.$1: usecase.$3 },  
       ),
     );
+
+    // Generate the repository implementation file.
     CommonFunctions.instance.createFile("$featurePath/repositories/${CommonFunctions.instance.snakeCase(feature)}_repository_impl.dart", 
       MvcArchitectureTemplateGenerator.instance.mvcRepositoryImplTemplate(
         feature: feature, 
@@ -137,9 +156,10 @@ class ProjectMvvmArchitectureGenerator {
       ),
     );
 
-
+    // Create directory and files for the use cases.
     CommonFunctions.instance.createDir("$featurePath/usecases");
     for (var usecase in usecases) {
+      // Generate the use case file for each specified use case.
       CommonFunctions.instance.createFile("$featurePath/usecases/${CommonFunctions.instance.snakeCase(usecase.$1)}_usecase.dart", 
         MvcArchitectureTemplateGenerator.instance.mvcUseCaseTemplate(
           usecase: usecase.$1, 

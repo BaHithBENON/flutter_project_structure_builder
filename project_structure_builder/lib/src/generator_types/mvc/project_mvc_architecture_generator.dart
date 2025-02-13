@@ -5,6 +5,24 @@ import '../../functions.dart';
 import '../common/common_template_generator.dart';
 import 'mvc_architecture_template_generator.dart';
 
+/// Generates the project structure for the [ArchitectureTypes.mvcArchitecture] architecture.
+///
+/// The generated structure is as follows:
+/// - [projectName]/lib/src/features: contains the feature folders.
+/// - [projectName]/lib/src/features/[featureName]: contains the feature files.
+/// - [projectName]/lib/src/features/[featureName]/adapters: contains the adapters for the features.
+/// - [projectName]/lib/src/features/[featureName]/controllers: contains the controllers for the features.
+/// - [projectName]/lib/src/features/[featureName]/data: contains the data models for the features.
+/// - [projectName]/lib/src/features/[featureName]/models: contains the business logic models for the features.
+/// - [projectName]/lib/src/features/[featureName]/repositories: contains the repositories for the features.
+/// - [projectName]/lib/src/features/[featureName]/usecases: contains the usecases for the features.
+/// - [projectName]/lib/bindings: contains the bindings for the features.
+/// - [projectName]/lib/bindings/app_bindings.dart: contains the app bindings.
+/// - [projectName]/lib/bindings/app_bindings.main.dart: contains the main app bindings.
+///
+/// The generated structure is based on the features and the state management type.
+/// If the state management type is [StateManagementTypes.getX], it will generate
+/// the binding classes for the features.
 class ProjectMvcArchitectureGenerator {
   final String projectName;
   final List<String> features;
@@ -20,6 +38,24 @@ class ProjectMvcArchitectureGenerator {
     required this.config,
   });
 
+  /// Generates the project structure for the [ArchitectureTypes.mvcArchitecture] architecture.
+  ///
+  /// The generated structure is as follows:
+  /// - [projectName]/lib/src/features: contains the feature folders.
+  /// - [projectName]/lib/src/features/[featureName]: contains the feature files.
+  /// - [projectName]/lib/src/features/[featureName]/adapters: contains the adapters for the features.
+  /// - [projectName]/lib/src/features/[featureName]/controllers: contains the controllers for the features.
+  /// - [projectName]/lib/src/features/[featureName]/data: contains the data models for the features.
+  /// - [projectName]/lib/src/features/[featureName]/models: contains the business logic models for the features.
+  /// - [projectName]/lib/src/features/[featureName]/repositories: contains the repositories for the features.
+  /// - [projectName]/lib/src/features/[featureName]/usecases: contains the usecases for the features.
+  /// - [projectName]/lib/bindings: contains the bindings for the features.
+  /// - [projectName]/lib/bindings/app_bindings.dart: contains the app bindings.
+  /// - [projectName]/lib/bindings/app_bindings.main.dart: contains the main app bindings.
+  ///
+  /// The generated structure is based on the features and the state management type.
+  /// If the state management type is [StateManagementTypes.getX], it will generate
+  /// the binding classes for the features.
   void generateStructure() {
 
     String featureStrategy = "$projectName/lib/src/features";
@@ -28,7 +64,7 @@ class ProjectMvcArchitectureGenerator {
     
     CommonFunctions.instance.createDir("$projectName/lib/src/core/enums");
 
-    // Création des fonctionnalités en MVC Architecture
+    // Feature creation in MVC Architecture
     for (var feature in features) {
       feature = CommonFunctions.instance.snakeCase(feature);
 
@@ -83,9 +119,23 @@ class ProjectMvcArchitectureGenerator {
       );
     }
 
-    print("✅ Structure du projet pour l´architecture ´´${ArchitectureTypes.mvcArchitecture.name}´´ générée avec succès !");
+    print("✅ Project structure for the '${ArchitectureTypes.mvcArchitecture.name}' architecture generated successfully!");
   }
 
+  /// Creates the feature structure in the MVC architecture.
+  ///
+  /// The structure is as follows:
+  /// - [projectName]/lib/src/features/[featureName]: contains the feature architecture layers.
+  /// - [projectName]/lib/src/features/[featureName]/adapters: contains the adapters for the features.
+  /// - [projectName]/lib/src/features/[featureName]/controllers: contains the controllers for the features.
+  /// - [projectName]/lib/src/features/[featureName]/data: contains the data models for the features.
+  /// - [projectName]/lib/src/features/[featureName]/models: contains the business logic models for the features.
+  /// - [projectName]/lib/src/features/[featureName]/repositories: contains the repositories for the features.
+  /// - [projectName]/lib/src/features/[featureName]/usecases: contains the usecases for the features.
+  ///
+  /// The generated structure is based on the features and the state management type.
+  /// If the state management type is [StateManagementTypes.getX], it will generate
+  /// the binding classes for the features.
   void _createFeature(String feature, {
     required String featureStrategy, required String featurePresentationLayerPath, 
     List<(String, UseCaseType, List<AttributeFormat>)> usecases = const [],
@@ -135,7 +185,6 @@ class ProjectMvcArchitectureGenerator {
         usecaseAttributes: <String, List<AttributeFormat>>{ for (var usecase in usecases) usecase.$1: usecase.$3 },  
       ),
     );
-
 
     CommonFunctions.instance.createDir("$featurePath/usecases");
     for (var usecase in usecases) {

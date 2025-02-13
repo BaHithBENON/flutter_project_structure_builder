@@ -40,7 +40,20 @@ flutter pub get
 
 ## 🛠️ Configuration du Projet
 
-Créez un fichier `project_structure_builder.yml` à la racine de votre projet Flutter et ajoutez-y la configuration suivante en fonction de vos besoins :
+📌 Dépendances à ajouter dans `pubspec.yaml`
+
+Ajoutez les dépendances suivantes dans votre fichier `pubspec.yaml` 
+```yaml
+dependencies:
+  flutter_dotenv: latest_version
+  get: latest_version
+  get_it: latest_version
+  fpdart: latest_version
+  equatable: latest_version
+```
+Remplacez `latest_version` par la version la plus récente disponible sur `pub.dev`.
+
+📌 Créez un fichier `project_structure_builder.yml` à la racine de votre projet Flutter et ajoutez-y la configuration suivante en fonction de vos besoins :
 
 ### Exemple de fichier de configuration :
 

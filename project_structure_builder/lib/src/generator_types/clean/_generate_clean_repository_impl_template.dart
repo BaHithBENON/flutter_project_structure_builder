@@ -2,6 +2,19 @@ import '../../attribute_format.dart';
 import '../../enums.dart';
 import '../../functions.dart';
 
+/// Generates a class that implements [${CommonFunctions.instance.capitalize(feature)}Repository].
+///
+/// The class is named [${CommonFunctions.instance.capitalize(feature)}RepositoryImpl] and contains
+/// one method for each usecase in [usecases].
+///
+/// Each method has the same name as the usecase and takes as arguments the
+/// attributes of the usecase. The return type of the method is [Future] or
+/// [Stream] depending on the value of [usecaseTypes[usecase]].
+///
+/// The body of each method is empty and should be implemented by the user.
+///
+/// The generated class is a valid implementation of [${CommonFunctions.instance.capitalize(feature)}Repository]
+/// and can be used as a starting point for implementing the repository for the feature.
 String generateCleanRepositoryImplTemplate({
   required List<String> usecases,
   required Map<String, UseCaseType> usecaseTypes,
@@ -24,6 +37,12 @@ String generateCleanRepositoryImplTemplate({
         : "";
 
     return '''
+  /// Implements [${CommonFunctions.instance.capitalize(feature)}Repository.${CommonFunctions.instance.camelCase(usecase)}].
+  ///
+  /// The method calls [${CommonFunctions.instance.capitalize(feature)}DataSource.${CommonFunctions.instance.camelCase(usecase)}]
+  /// and returns the result as a tuple of [Failure] and [Entity${CommonFunctions.instance.capitalize(feature)}].
+  ///
+  /// The method is marked as [override] and should be implemented by the user.
   @override
   $returnType ${CommonFunctions.instance.camelCase(usecase)}($params) ${((usecaseType == UseCaseType.stream) || (usecaseType == UseCaseType.simpleStream)) ? "" : "async"} {
     try {
@@ -55,6 +74,14 @@ import '../../domain/entities/entity_$feature.dart';
 import '../../domain/repositories/${feature}_repository.dart';
 import '../data_sources/${feature}_data_source.dart';
 
+/// A class that implements [${CommonFunctions.instance.capitalize(feature)}Repository].
+///
+/// The class is named [${CommonFunctions.instance.capitalize(feature)}RepositoryImpl] and contains
+/// one method for each usecase in [usecases].
+///
+/// Each method has the same name as the usecase and takes as arguments the
+/// attributes of the usecase. The return type of the method is [Future] or
+/// [Stream] depending on the value of [usecaseTypes[usecase]].
 class ${CommonFunctions.instance.capitalize(feature)}RepositoryImpl implements ${CommonFunctions.instance.capitalize(feature)}Repository {
 
   final ${CommonFunctions.instance.capitalize(feature)}DataSource dataSource;

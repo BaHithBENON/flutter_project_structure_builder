@@ -2,6 +2,19 @@ import '../../attribute_format.dart';
 import '../../enums.dart';
 import '../../functions.dart';
 
+/// Generates a class that implements [${CommonFunctions.instance.capitalize(feature)}DataSource].
+///
+/// The class is named [${CommonFunctions.instance.capitalize(feature)}DataSourceImpl] and contains
+/// one method for each usecase in [usecases].
+///
+/// Each method has the same name as the usecase and takes as arguments the attributes
+/// of the usecase. The return type of the method is [Future] or [Stream] depending on
+/// the value of [usecaseTypes[usecase]].
+///
+/// The body of each method is empty and should be implemented by the user.
+///
+/// The generated class is a valid implementation of [${CommonFunctions.instance.capitalize(feature)}DataSource]
+/// and can be used as a starting point for implementing the data source for the feature.
 String generateCleanDataSourceImplTemplate({
   required String feature,
   required List<String> usecases,

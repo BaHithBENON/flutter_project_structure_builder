@@ -5,8 +5,20 @@ import 'generator_types/clean/project_clean_architecture_generator.dart';
 import 'generator_types/common/common_structure_geneator.dart';
 import 'generator_types/mvc/project_mvc_architecture_generator.dart';
 import 'generator_types/mvvm/project_mvvm_architecture_generator.dart';
-import 'logs/custom_logger.dart';
 
+/// This class generates the project structure for the specified architecture
+/// type.
+///
+/// The generated structure is based on the project name, the architecture type,
+/// the features, the features strategy, the state management type, and the
+/// configuration.
+///
+/// If the architecture type is [ArchitectureTypes.cleanArchitecture], it will
+/// generate the project structure for the clean architecture.
+/// If the architecture type is [ArchitectureTypes.mvcArchitecture], it will
+/// generate the project structure for the MVC architecture.
+/// If the architecture type is [ArchitectureTypes.mvvmArchitecture], it will
+/// generate the project structure for the MVVM architecture.
 class ProjectGenerator {
   final String projectName;
   final ArchitectureTypes architecture;
@@ -28,15 +40,27 @@ class ProjectGenerator {
     this.stateManagement = StateManagementTypes.getX,
   });
 
+  /// Generates the project structure.
+  ///
+  /// The generated structure is based on the project name, the architecture type,
+  /// the features, the features strategy, the state management type, and the
+  /// configuration.
+  /// If the architecture type is [ArchitectureTypes.cleanArchitecture], it will
+  /// generate the project structure for the clean architecture.
+  /// If the architecture type is [ArchitectureTypes.mvcArchitecture], it will
+  /// generate the project structure for the MVC architecture.
+  /// If the architecture type is [ArchitectureTypes.mvvmArchitecture], it will
+  /// generate the project structure for the MVVM architecture.
   void generateStructure(String projectPath) {
-    AppLogger.instance.logger.i("🚀 \uD83D\uDE80 Génération du projet '$projectName'...");
+    print(" \uD83D\uDE80 Generating project '$projectName'...");
 
+    // Create the lib directory if it does not exist
     final libDir = Directory('$projectPath/lib');
     if (!libDir.existsSync()) {
       libDir.createSync(recursive: true);
     }
 
-    // Structure de base
+    // Generate the basic structure
     final commonStructureGenerator = CommonStructureGenerator(
       projectName: projectPath,
       architecture: architecture,
@@ -50,38 +74,45 @@ class ProjectGenerator {
 
     commonStructureGenerator.generateStructure();
 
-    if (architecture == ArchitectureTypes.cleanArchitecture) {
-      final generator = ProjectCleanArchitectureGenerator(
-        projectName: projectPath, 
-        features: features,
-        stateManagement: stateManagement, 
-        config: config,
-        featuresStrategy: featuresStrategy,
-      );
-      generator.generateStructure();
-    } else if (architecture == ArchitectureTypes.mvcArchitecture) {
-      final generator = ProjectMvcArchitectureGenerator(
-        projectName: projectPath, 
-        features: features,
-        stateManagement: stateManagement, 
-        config: config,
-        featuresStrategy: featuresStrategy,
-      );
-      generator.generateStructure();
-    } else if (architecture == ArchitectureTypes.mvvmArchitecture) {
-      final generator = ProjectMvvmArchitectureGenerator(
-        projectName: projectPath, 
-        features: features,
-        stateManagement: stateManagement, 
-        config: config,
-        featuresStrategy: featuresStrategy,
-      );
-      generator.generateStructure();
-    } else {
-      AppLogger.instance.logger.e("❌ Architecture '$architecture' non prise en charge.");
+    // Generate the architecture specific structure
+    switch (architecture) {
+      case ArchitectureTypes.cleanArchitecture:
+        final generator = ProjectCleanArchitectureGenerator(
+          projectName: projectPath, 
+          features: features,
+          stateManagement: stateManagement, 
+          config: config,
+          featuresStrategy: featuresStrategy,
+        );
+        generator.generateStructure();
+        break;
+      case ArchitectureTypes.mvcArchitecture:
+        final generator = ProjectMvcArchitectureGenerator(
+          projectName: projectPath, 
+          features: features,
+          stateManagement: stateManagement, 
+          config: config,
+          featuresStrategy: featuresStrategy,
+        );
+        generator.generateStructure();
+        break;
+      case ArchitectureTypes.mvvmArchitecture:
+        final generator = ProjectMvvmArchitectureGenerator(
+          projectName: projectPath, 
+          features: features,
+          stateManagement: stateManagement, 
+          config: config,
+          featuresStrategy: featuresStrategy,
+        );
+        generator.generateStructure();
+        break;
+      // ignore: unreachable_switch_default
+      default:
+        print(" Architecture '$architecture' not supported.");
+        break;
     }
 
-    AppLogger.instance.logger.i("✅ Structure du projet générée avec succès !");
+    print(" Project structure generated successfully!");
   }
 
 }

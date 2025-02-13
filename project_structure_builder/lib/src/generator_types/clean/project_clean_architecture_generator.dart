@@ -5,6 +5,21 @@ import '../../functions.dart';
 import '../common/common_template_generator.dart';
 import 'clean_architecture_template_generator.dart';
 
+/// Generates the project structure for the clean architecture.
+///
+/// The project structure is as follows:
+/// - [projectName]/lib/src/features: contains the feature folders.
+/// - [projectName]/lib/src/features/[featureName]: contains the feature architecture layers.
+/// - [projectName]/lib/src/features/[featureName]/domain: contains the domain models.
+/// - [projectName]/lib/src/features/[featureName]/data: contains the data models.
+/// - [projectName]/lib/src/features/[featureName]/presentation: contains the presentation models.
+/// - [projectName]/lib/bindings: contains the bindings for the features.
+/// - [projectName]/lib/bindings/app_bindings.dart: contains the app bindings.
+/// - [projectName]/lib/bindings/app_bindings.main.dart: contains the main app bindings.
+///
+/// The generated structure is based on the features and the state management type.
+/// If the state management type is [StateManagementTypes.getX], it will generate
+/// the binding classes for the features.
 class ProjectCleanArchitectureGenerator {
   final String projectName;
   final List<String> features;
@@ -20,13 +35,28 @@ class ProjectCleanArchitectureGenerator {
     required this.config,
   });
 
+  /// Generates the project structure for the clean architecture.
+  ///
+  /// The project structure is as follows:
+  /// - [projectName]/lib/src/features: contains the feature folders.
+  /// - [projectName]/lib/src/features/[featureName]: contains the feature architecture layers.
+  /// - [projectName]/lib/src/features/[featureName]/domain: contains the domain models.
+  /// - [projectName]/lib/src/features/[featureName]/data: contains the data models.
+  /// - [projectName]/lib/src/features/[featureName]/presentation: contains the presentation models.
+  /// - [projectName]/lib/bindings: contains the bindings for the features.
+  /// - [projectName]/lib/bindings/app_bindings.dart: contains the app bindings.
+  /// - [projectName]/lib/bindings/app_bindings.main.dart: contains the main app bindings.
+  ///
+  /// The generated structure is based on the features and the state management type.
+  /// If the state management type is [StateManagementTypes.getX], it will generate
+  /// the binding classes for the features.
   void generateStructure() {
 
     String featureStrategy = "$projectName/lib/src/features";
 
     CommonFunctions.instance.createDir(featureStrategy);
 
-    // Création des fonctionnalités en Clean Architecture
+    // Feature´s creation in Clean architecture
     for (var feature in features) {
       feature = CommonFunctions.instance.snakeCase(feature);
 
@@ -81,9 +111,20 @@ class ProjectCleanArchitectureGenerator {
       );
     }
 
-    print("✅ Structure du projet pour l´architecture ´´${ArchitectureTypes.cleanArchitecture.name}´´ générée avec succès !");
+    print("✅ Project structure for the '${ArchitectureTypes.cleanArchitecture.name}' architecture generated successfully!");
   }
 
+  /// Creates the feature structure in the clean architecture.
+  ///
+  /// The structure is as follows:
+  /// - [projectName]/lib/src/features/[featureName]: contains the feature architecture layers.
+  /// - [projectName]/lib/src/features/[featureName]/domain: contains the domain models.
+  /// - [projectName]/lib/src/features/[featureName]/data: contains the data models.
+  /// - [projectName]/lib/src/features/[featureName]/presentation: contains the presentation models.
+  ///
+  /// The generated structure is based on the features and the state management type.
+  /// If the state management type is [StateManagementTypes.getX], it will generate
+  /// the binding classes for the features.
   void _createFeature(String feature, {
     required String featureStrategy, required String featurePresentationLayerPath, 
     List<(String, UseCaseType, List<AttributeFormat>)> usecases = const [],
