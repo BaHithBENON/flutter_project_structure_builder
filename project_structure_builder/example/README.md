@@ -9,9 +9,9 @@ This project provides three architectural examples to help you structure your Fl
 For detailed examples, check the **GitHub repository**: [View Examples](https://github.com/BaHithBENON/flutter_project_structure_builder/tree/main/project_structure_builder/example)
 
 
-- **MVC (Model-View-Controller):** [View Example](example_mvc/)
-- **MVVM (Model-View-ViewModel):** [View Example](example_mvvm/)
-- **Clean Architecture:** [View Example](example_clean/)
+- **MVC (Model-View-Controller):** [View Example](https://github.com/BaHithBENON/flutter_project_structure_builder/tree/develop/project_structure_builder/example/example_mvc)
+- **MVVM (Model-View-ViewModel):** [View Example](https://github.com/BaHithBENON/flutter_project_structure_builder/tree/develop/project_structure_builder/example/example_mvvm)
+- **Clean Architecture:** [View Example](https://github.com/BaHithBENON/flutter_project_structure_builder/tree/develop/project_structure_builder/example/example_clean)
 
 ### Additional Resources
 
