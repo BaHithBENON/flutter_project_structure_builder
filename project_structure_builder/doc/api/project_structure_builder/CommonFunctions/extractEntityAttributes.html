@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the extractEntityAttributes method from the CommonFunctions class, for the Dart programming language.">
+  <title>extractEntityAttributes method - CommonFunctions class - project_structure_builder library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">project_structure_builder</a></li>
+    <li><a href="../../project_structure_builder/project_structure_builder-library.html">project_structure_builder.dart</a></li>
+    <li><a href="../../project_structure_builder/CommonFunctions-class.html">CommonFunctions</a></li>
+    <li class="self-crumb">extractEntityAttributes method</li>
+  </ol>
+  <div class="self-name">extractEntityAttributes</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="project_structure_builder&#47;CommonFunctions-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">extractEntityAttributes</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../project_structure_builder/AttributeFormat-class.html">AttributeFormat</a></span>&gt;</span></span>
+<span class="name ">extractEntityAttributes</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="extractEntityAttributes-param-config"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">config</span>, </span></li>
+<li><span class="parameter" id="extractEntityAttributes-param-featureName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">featureName</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Extracts the list of attributes of an entity for the given <code>featureName</code>.</p>
+<p>The given <code>config</code> is a Map containing the configuration of the project.
+The <code>config</code> should have a key "features" which is a List of Maps.
+Each Map in the List should have a key which is the feature name.</p>
+<p>The function returns a List of <a href="../../project_structure_builder/AttributeFormat-class.html">AttributeFormat</a> containing the attributes
+of the entity for the given <code>featureName</code>.</p>
+<p><code>config</code> The configuration of the project.
+<code>featureName</code> The name of the feature for which the entity attributes
+are extracted.</p>
+<p>Returns a List of <a href="../../project_structure_builder/AttributeFormat-class.html">AttributeFormat</a> containing the attributes of the
+entity for the given <code>featureName</code>.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">List&lt;AttributeFormat&gt; extractEntityAttributes(Map&lt;String, dynamic&gt; config, String featureName,) {
+  final List&lt;AttributeFormat&gt; attributesList = [];
+
+  final features = config[&quot;features&quot;] as List&lt;dynamic&gt;? ?? [];
+
+  &#47;&#47; Search for the specific feature
+  final feature = features.firstWhere(
+    (f) =&gt; (f as Map).keys.first == featureName,
+    orElse: () =&gt; null,
+  );
+
+  if (feature == null) {
+    return []; &#47;&#47; Returns an empty list if the feature does not exist
+  }
+
+  final featureDetails = yamlToMap(feature[featureName]);
+  final attributes = featureDetails[&quot;entity_attributes&quot;] == null ? null : yamlToMap(featureDetails[&quot;entity_attributes&quot;]);
+
+  if (attributes != null) {
+    for (var attributeEntry in attributes.entries) {
+      final attributeName = attributeEntry.key;
+      final attributeType = DartDataType.fromValue(attributeEntry.value as String?);
+
+      attributesList.add(AttributeFormat(attributeName, attributeType));
+    }
+  }
+
+  return attributesList;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">project_structure_builder</a></li>
+    <li><a href="../../project_structure_builder/project_structure_builder-library.html">project_structure_builder</a></li>
+    <li><a href="../../project_structure_builder/CommonFunctions-class.html">CommonFunctions</a></li>
+    <li class="self-crumb">extractEntityAttributes method</li>
+</ol>
+
+    <h5>CommonFunctions class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    project_structure_builder
+      0.0.2
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

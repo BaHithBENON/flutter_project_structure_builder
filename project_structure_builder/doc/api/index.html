@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="project_structure_builder API docs, for the Dart programming language.">
+  <title>project_structure_builder - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/BaHithBENON/flutter_project_structure_builder">project_structure_builder package</a></li>
+  </ol>
+  <div class="self-name">project_structure_builder</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="-project-structure-generator---documentation">📦 Project Structure Generator - Documentation</h1>
+<p><strong>Note</strong> : Only use it when creating your project. It is only used to generate a base of files and resources so that you do not have to create it yourself, especially since it is tedious to copy and paste or redo the same things from one project to another. If the generated files and architectures do not suit you, you can modify them after generation without worries. You can also modify the package and submit it to help other people.</p>
+<h2 id="-installation">📌 Installation</h2>
+<p>Add the <code>project_structure_builder</code> package to your project's <code>dev_dependencies</code>:</p>
+<pre class="language-yaml"><code class="language-yaml">flutter pub add --dev project_structure_builder
+</code></pre>
+<p>Or modify your <code>pubspec.yaml</code> file directly:</p>
+<pre class="language-yaml"><code class="language-yaml">dev_dependencies:
+  project_structure_builder: latest_version
+</code></pre>
+<p>Alternatively:</p>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  project_structure_builder:
+    git:
+      url: https://github.com/BaHithBENON/flutter_project_structure_builder.git
+      ref: main
+      path: project_structure_builder
+</code></pre>
+<p>Then run:</p>
+<pre class="language-bash"><code class="language-bash">flutter pub get
+</code></pre>
+<h2 id="-project-configuration">🛠️ Project Configuration</h2>
+<p>📌 Dependencies to Add in <code>pubspec.yaml</code></p>
+<p>Add the following dependencies to your <code>pubspec.yaml</code> file</p>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  flutter_dotenv: latest_version
+  get: latest_version
+  get_it: latest_version
+  fpdart: latest_version
+  equatable: latest_version
+</code></pre>
+<p>Replace <code>latest_version</code> with the most recent version available on <code>pub.dev</code>.</p>
+<p>📌 Create a <code>project_structure_builder.yml</code> file at the root of your Flutter project and configure it according to your needs:</p>
+<h3 id="example-configuration-file">Example Configuration File:</h3>
+<pre class="language-yaml"><code class="language-yaml"># This is an example. Modify values as needed.
+
+# Project name
+project_name: my_flutter_application
+
+# Available architecture options:
+#   - clean_architecture (default)
+#   - mvc_architecture
+#   - mvvm_architecture
+architecture: mvc_architecture
+
+# Available feature management strategies:
+#   - inLib (default): all features are placed in the `lib` folder
+#   - independantModules: each feature has its own Flutter modules for domain and data layers. The presentation layer remains in the main `lib` folder.
+#
+# Note: The "independantModules" option is only available for `clean_architecture`.
+features_strategy: independantModules
+
+# List of features:
+features:
+  - authentication: # Feature name (snake_case format)
+      
+      name: authentication # Override feature name
+      
+      # Feature description
+      description: User authentication feature
+      
+      # List of entity attributes (optional)
+      # If you don’t have attributes, you can skip this section.
+      entity_attributes:
+        email: String # Format: { attribute_name: type }
+        otp: String
+        password: String
+        token: String
+        id: int
+      
+      # List of use cases
+      usecases:
+        - getUserOtp: # Use case name
+            use_case_type: Future # Return type (Future or Stream)
+            description: Retrieve OTP for user authentication
+            params: # List of parameters
+              email: String # Format: { parameter_name: type }
+        - verifyUserOtp:
+            use_case_type: Future
+            description: Verify OTP code
+            params:
+              email: String
+              otp: String
+        - verifyUserExistence:
+            use_case_type: Future
+            description: Check if the user exists
+
+# State management
+# Default is GetX
+# Currently available options: none, getx
+# Note: Only "none" and "getx" are available at the moment.
+state_management: none
+
+# List of environments:
+envs:
+  - development
+  - staging
+  - production
+
+# List of environment variables
+# Do not include sensitive data (only variable names)
+env_variables:
+  - ENV1
+  - ENV2
+</code></pre>
+<h2 id="-parameter-explanation">🔍 Parameter Explanation</h2>
+<h3 id="-project-name"><strong>📌 Project Name</strong></h3>
+<pre class="language-yaml"><code class="language-yaml">project_name: my_flutter_application
+</code></pre>
+<p>Defines the Flutter project name.</p>
+<h3 id="-architecture"><strong>🛠️ Architecture</strong></h3>
+<pre class="language-yaml"><code class="language-yaml">architecture: mvc_architecture
+</code></pre>
+<p>Sets the project architecture.
+Available options:</p>
+<ul>
+<li><code>clean_architecture</code> (default)</li>
+<li><code>mvc_architecture</code></li>
+<li><code>mvvm_architecture</code></li>
+</ul>
+<h3 id="-feature-management-strategy"><strong>📂 Feature Management Strategy</strong></h3>
+<pre class="language-yaml"><code class="language-yaml">features_strategy: independantModules
+</code></pre>
+<p>Defines how features are organized in the project.</p>
+<ul>
+<li><code>inLib</code>: All features are placed in <code>lib/</code>.</li>
+<li><code>independantModules</code>: Each feature has its own modules.</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: <code>independantModules</code> is only available for <code>clean_architecture</code>.</p>
+</blockquote>
+<h3 id="-feature-list"><strong>🚀 Feature List</strong></h3>
+<pre class="language-yaml"><code class="language-yaml">features:
+  - authentication:
+      name: authentication
+      description: User authentication feature
+      entity_attributes:
+        email: String
+        otp: String
+        password: String
+        token: String
+        id: int
+      usecases:
+        - getUserOtp:
+            use_case_type: Future
+            description: Retrieve OTP for user authentication
+            params:
+              email: String
+        - verifyUserOtp:
+            use_case_type: Future
+            description: Verify OTP code
+            params:
+              email: String
+              otp: String
+        - verifyUserExistence:
+            use_case_type: Future
+            description: Check if the user exists
+</code></pre>
+<ul>
+<li>Supported attribute and parameter types: <code>String, int, double, num, bool, List, Set, Map, DateTime, Duration, Object, dynamic, void</code>. If a type is not recognized, it will default to <code>dynamic</code> during generation.</li>
+<li>Function return types (<code>Future</code> or <code>Stream</code>).</li>
+</ul>
+<h3 id="-state-management"><strong>📊 State Management</strong></h3>
+<pre class="language-yaml"><code class="language-yaml">state_management: none
+</code></pre>
+<p>Available options:</p>
+<ul>
+<li><code>none</code></li>
+<li><code>getx</code> (default)</li>
+</ul>
+<h3 id="-environments"><strong>🔧 Environments</strong></h3>
+<p>Define the available environments. It is recommended to have at least one development environment.</p>
+<pre class="language-yaml"><code class="language-yaml">envs:
+  - development
+  - staging
+  - production
+</code></pre>
+<h3 id="-environment-variables"><strong>🏢 Environment Variables</strong></h3>
+<pre class="language-yaml"><code class="language-yaml">env_variables:
+  - ENV1
+  - ENV2
+</code></pre>
+<p>Do not include sensitive data here!</p>
+<hr>
+<h2 id="-generate-project-structure">🚀 Generate Project Structure</h2>
+<p>Run the following command to generate the project structure:</p>
+<pre class="language-bash"><code class="language-bash">dart run project_structure_builder update
+</code></pre>
+<p>This will parse the configuration file and automatically structure the project based on the defined parameters.</p>
+<hr>
+<h2 id="-conclusion">🎯 Conclusion</h2>
+<p>With this setup, your Flutter project will be well-structured and organized following best practices. 🚀</p>
+<p>If you have any questions, feel free to check the official documentation or open an issue on the GitHub repository! 🎯</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="main">
+  <span class="name"><a href="main/main-library.html">main</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="project_structure_builder">
+  <span class="name"><a href="project_structure_builder/project_structure_builder-library.html">project_structure_builder</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://github.com/BaHithBENON/flutter_project_structure_builder">project_structure_builder package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">project_structure_builder</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="main/main-library.html">main</a></li>
+      <li><a href="project_structure_builder/project_structure_builder-library.html">project_structure_builder</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    project_structure_builder
+      0.0.2
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
