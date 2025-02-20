@@ -1,6 +1,6 @@
 name: project_structure_builder
 description: "A tool to configure and generate Flutter project structures based on your architectural needs."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/BaHithBENON/flutter_project_structure_builder
 
 environment:

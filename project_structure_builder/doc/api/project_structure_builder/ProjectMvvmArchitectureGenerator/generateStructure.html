@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the generateStructure method from the ProjectMvvmArchitectureGenerator class, for the Dart programming language.">
+  <title>generateStructure method - ProjectMvvmArchitectureGenerator class - project_structure_builder library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">project_structure_builder</a></li>
+    <li><a href="../../project_structure_builder/project_structure_builder-library.html">project_structure_builder.dart</a></li>
+    <li><a href="../../project_structure_builder/ProjectMvvmArchitectureGenerator-class.html">ProjectMvvmArchitectureGenerator</a></li>
+    <li class="self-crumb">generateStructure method</li>
+  </ol>
+  <div class="self-name">generateStructure</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="project_structure_builder&#47;ProjectMvvmArchitectureGenerator-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">generateStructure</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<span class="returntype">void</span>
+<span class="name ">generateStructure</span>(<wbr>)
+
+      
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">void generateStructure() {
+
+  String featureStrategy = &quot;$projectName&#47;lib&#47;src&#47;features&quot;;
+
+  CommonFunctions.instance.createDir(featureStrategy);
+
+  CommonFunctions.instance.createDir(&quot;$projectName&#47;lib&#47;src&#47;core&#47;enums&quot;);
+
+  &#47;&#47; Création des fonctionnalités en MVVM Architecture
+  for (var feature in features) {
+    feature = CommonFunctions.instance.snakeCase(feature);
+
+    _createFeature(
+      feature,
+      featureStrategy: featureStrategy,
+      featurePresentationLayerPath: CommonFunctions.instance.getFeaturePresentationLayerPath(
+        feature: feature, projectName: projectName, featuresStrategy: featuresStrategy, architecture: ArchitectureTypes.mvvmArchitecture
+      ),
+      usecases: CommonFunctions.instance.extractUseCasesForFeature(config, feature),
+      entityAttributes: CommonFunctions.instance.extractEntityAttributes(config, feature),
+    );
+  }
+
+  if (stateManagement == StateManagementTypes.getX) {
+    CommonFunctions.instance.createDir(&quot;$projectName&#47;lib&#47;bindings&quot;);
+    CommonFunctions.instance.createFile(&quot;$projectName&#47;lib&#47;bindings&#47;app_bindings.dart&quot;,
+      CommonTemplateGenerator.instance.bindingTemplate(
+        featuresBlocs: &lt;FeaturesBlocsType&gt;[
+          for (var feature in features)
+            (
+              CommonFunctions.instance.snakeCase(feature),
+              &quot;${CommonFunctions.instance.capitalize(feature)}Repository&quot;,
+              &quot;${CommonFunctions.instance.capitalize(feature)}DataSource&quot;,
+              [
+                ...CommonFunctions.instance.extractUseCasesForFeature(config, feature).map((u) =&gt; &quot;${CommonFunctions.instance.camelCase(u.$1)}UseCase&quot;),
+              ],
+              CommonFunctions.instance.generateControllerClassName(feature: feature, architecture: ArchitectureTypes.mvvmArchitecture),
+            )
+        ],
+        featuresStrategy: featuresStrategy,
+        projectName: projectName,
+        architecture: ArchitectureTypes.mvvmArchitecture,
+      ),
+    );
+    CommonFunctions.instance.createFile(&quot;$projectName&#47;lib&#47;bindings&#47;app_bindings.main.dart&quot;,
+      CommonTemplateGenerator.instance.bindingMainTemplate(
+        featuresBlocs: &lt;FeaturesBlocsType&gt;[
+          for (var feature in features)
+            (
+              CommonFunctions.instance.snakeCase(feature),
+              &quot;${CommonFunctions.instance.capitalize(feature)}Repository&quot;,
+              &quot;${CommonFunctions.instance.capitalize(feature)}DataSource&quot;,
+              [
+                ...CommonFunctions.instance.extractUseCasesForFeature(config, feature).map((u) =&gt; CommonFunctions.instance.generateUseCaseClassName(u.$1)),
+              ],
+              CommonFunctions.instance.generateControllerClassName(feature: feature, architecture: ArchitectureTypes.mvvmArchitecture),
+            )
+        ],
+        architecture: ArchitectureTypes.mvvmArchitecture,
+      ),
+    );
+  }
+
+  print(&quot;✅ Project structure for the &#39;${ArchitectureTypes.mvvmArchitecture.name}&#39; architecture generated successfully!&quot;);
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">project_structure_builder</a></li>
+    <li><a href="../../project_structure_builder/project_structure_builder-library.html">project_structure_builder</a></li>
+    <li><a href="../../project_structure_builder/ProjectMvvmArchitectureGenerator-class.html">ProjectMvvmArchitectureGenerator</a></li>
+    <li class="self-crumb">generateStructure method</li>
+</ol>
+
+    <h5>ProjectMvvmArchitectureGenerator class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    project_structure_builder
+      0.0.2
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
