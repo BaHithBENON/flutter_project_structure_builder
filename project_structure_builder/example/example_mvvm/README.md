@@ -1,6 +1,6 @@
-# example_mvvm
+# MVVM Example  
+This directory contains an implementation of the Model-View-ViewModel architecture in Flutter.  
 
-A new Flutter project.
 
 ## Getting Started
 

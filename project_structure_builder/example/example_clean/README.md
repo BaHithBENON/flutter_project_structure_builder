@@ -1,6 +1,5 @@
-# example_clean
-
-A new Flutter project.
+# Clean Architecture Example  
+This directory contains an implementation of Clean Architecture in Flutter.  
 
 ## Getting Started
 

@@ -1,6 +1,5 @@
-# example_mvc
-
-A new Flutter project.
+# MVC Example  
+This directory contains an implementation of the Model-View-Controller architecture in Flutter.  
 
 ## Getting Started
 
